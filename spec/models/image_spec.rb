@@ -29,12 +29,16 @@ describe Image do
         let(:link) { "http://www.justanimal.org/images/gorilla-10.jpg" }
         it "works with comment" do
           comment = "abc123"
-          image = Image.new(link: link, comment: comment)
-          image.should be_valid
+          VCR.use_cassette "images/model_spec" do
+            image = Image.new(link: link, comment: comment)
+            image.should be_valid
+          end
         end
         it "works without comment" do
-          image = Image.new(link: link)
-          image.should be_valid
+          VCR.use_cassette "images/model_spec" do
+            image = Image.new(link: link)
+            image.should be_valid
+          end
         end
         it "fails if comment is too long" do
           comment = "a" * 258

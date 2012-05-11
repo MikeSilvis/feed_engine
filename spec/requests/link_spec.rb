@@ -10,9 +10,11 @@ describe Link do
 
     it "passes" do
       within("#link_form") do
-        fill_in "growl[link]", :with => "http://abc.com/"
-        fill_in "growl[comment]", :with => "wooo"
-        click_on "Create Link"
+        VCR.use_cassette "requests/link" do
+          fill_in "growl[link]", :with => "http://abc.com/"
+          fill_in "growl[comment]", :with => "wooo"
+          click_on "Create Link"
+        end
       end
       page.should have_content "Your link has been created."
     end

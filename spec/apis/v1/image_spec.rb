@@ -1,11 +1,13 @@
 require "spec_helper"
 describe "/api/v1/projects", :type => :api do
-    let(:user) { FactoryGirl.create(:user) }
-    let(:token) { user.authentication_token }
-    before(:each) do
+  let(:user) { FactoryGirl.create(:user) }
+  let(:token) { user.authentication_token }
+  before(:each) do
+    VCR.use_cassette('image/api_gorilla') do
       @image = FactoryGirl.create(:image, user: user, comment: "Woooo")
     end
-    context "images viewable by this user" do
+  end
+  context "images viewable by this user" do
     let(:url) { "/api/v1/images" }
     it "json" do
       get "#{url}.json"
